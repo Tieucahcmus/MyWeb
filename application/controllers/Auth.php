@@ -3,7 +3,6 @@
 
 class Auth extends CI_Controller
  {
-	//  public $bare_url = 'tieuca.000webhostapp.com';
 
 	 function __construct()
 		{
@@ -11,12 +10,6 @@ class Auth extends CI_Controller
 			$this->load->helper('form');
 			$this->load->helper('url');
 			$this->load->library('session');
-
-		}
-	
-        public function index()
-        {
-			$this->load->view('home/index');
 		}
 
 		public function loginForm()
@@ -24,12 +17,50 @@ class Auth extends CI_Controller
 			$this->load->view('Auth/login');
 		}
 
-		public function login()
+		public function registerForm()
 		{
-			$bare_url = 'http://localhost/CodeIgniter';
-			$data['username'] = $_POST['username'];
-			$data['password'] = $_POST['password'];
-			$query = 'SELECT * FROM account WHERE username = "'.$data['username'].'" AND password = "'.$data['password'].'"';
+			$this->load->view('Auth/register');
+		}
+
+		public function register()
+		{
+			$data= array(
+				'username'=>$_POST['username'],
+				'name'=>$_POST['name'],
+				'password'=>$_POST['password'],
+				'confirm'=>$_POST['confirm'],
+				'address'=>$_POST['address']
+			);
+
+			$account = array(
+				'username'=>$_POST['username'],
+				'password'=>$_POST['password']
+			);
+			
+			$InsertAccount = 'INSERT INTO account (username,password) VALUES("'.$data["username"].'" , "'.$data["password"].'")';
+			$InsertInfo = 'INSERT INTO info (name,address,username) VALUES("'.$data["name"].'" , "'.$data["address"].'" , "'.$data["username"].'")';
+
+			$this->insert($InsertAccount);
+			$this->insert($InsertInfo);
+			$this->login($account);
+			redirect($bare_url);
+		}
+
+		public function login($sessionLogin = [])
+		{
+			$bare_url = base_url();	
+			if(empty($sessionLogin))
+			{
+				$data['username'] = $_POST['username'];
+				$data['password'] = $_POST['password'];
+			}else
+			{
+				$data['username'] = $sessionLogin['username'];
+				$data['password'] = $sessionLogin['password'];
+			}
+		
+			// $query = 'SELECT * FROM account WHERE is_delete = 0 AND username = "'.$data['username'].'" AND password = "'.$data['password'].'"';
+			$query = 'SELECT * FROM account a INNER JOIN info i on a.username = i.username WHERE a.is_delete = 0 AND a.username = "'.$data['username'].'" AND a.password = "'.$data['password'].'"';
 			$result = $this->query($query);
 
 			$this->setSession('userSession',$result[0]);
@@ -45,10 +76,17 @@ class Auth extends CI_Controller
 			$this->removeSession('userSession');
 			return redirect($bare_url);
 		}
+
 		public function query($query)
 		{
 			$this->load->database();
 			return $this->db->query($query)->result_array();
+		}
+
+		public function insert($query)
+		{
+			$this->load->database();
+			return $this->db->query($query);
 		}
 
 		public function setSession($sessionName,$value)

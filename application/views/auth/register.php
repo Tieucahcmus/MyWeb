@@ -12,8 +12,10 @@ $this->load->helper('url');
 		<title>Express App</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 	</head>
-
+	
 	<body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light shadow sticky-top">
 		<a class="navbar-brand" href="#">
@@ -51,7 +53,8 @@ $this->load->helper('url');
 			 <form class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-			</form>
+			</form>&nbsp;
+            <a class="btn btn-sm btn-outline-secondary my-2 my-sm-0" href="<?= base_url()?>index.php/auth/loginForm">Sign up</a>
 		</div>
 	</nav>
 
@@ -77,27 +80,31 @@ $this->load->helper('url');
 				</div>
 			</div>
 			<div class="col-sm-9">
-
-				<form method="post" action="<?= base_url()?>index.php/auth/login">
-					<div class="form-group">
-						<label for="exampleInputEmail1">User Name</label>
-						<input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="User Name">
-						<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-					</div>
-					<div class="form-group">
-						<label for="exampleInputPassword1">Password</label>
-						<input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-					</div>
-					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="exampleCheck1">
-						<label class="form-check-label" for="exampleCheck1">Check me out</label>
-					</div>
-					<div class="form-group">
-						<a href="<?= base_url()?>index.php/auth/registerForm">Register</a>
-					</div>
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</form>
-
+               <form method="post"  id="registerForm" action="<?= base_url()?>index.php/auth/register">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                        <label for="inputEmail4">User Name</label>
+                        <input type="text" id="txtUsername" required name="username" class="form-control" id="inputEmail4" placeholder="User Name">
+                        </div>
+                        <div class="form-group col-md-12">
+                        <label for="inputEmail4">Name</label>
+                        <input type="text" name="name" required class="form-control" id="inputEmail4" placeholder="Name">
+                        </div>
+                        <div class="form-group col-md-12">
+                        <label for="inputPassword4">Password</label>
+                        <input type="password" name="password" required class="form-control" id="inputPassword4" placeholder="Password">
+                        </div>
+                        <div class="form-group col-md-12">
+                        <label for="inputPassword4">Confrim Password</label>
+                        <input type="password" name="confirm" required class="form-control" id="inputPassword4" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" name="address" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
 			</div>
 		</div>
 
