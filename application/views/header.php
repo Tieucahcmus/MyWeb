@@ -2,7 +2,7 @@
  $this->load->helper('url');
  $this->load->library('session');
  if($this->session->has_userdata('userSession')){
-  $session = $_SESSION['userSession'];
+  $session =(array)$_SESSION['userSession'];
  }
 ?>
 
@@ -16,7 +16,6 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/blog/">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
     <!-- Bootstrap core CSS -->
-    <link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" >
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" >
 
     <style>
@@ -49,8 +48,9 @@
      
       </div>
       <div class="col-4 text-center">
-        <a class="blog-header-logo text-dark" href="<?= base_url()?>"><h4><i>Tiểu Ca Pages</i></h4></a>
-      </div>
+		  <a href="<?php echo base_url(); ?>"><img class="d-block mx-auto mb-4" src="https://ui-ex.com/images/dragon-vector-dragan-5.png" alt="" width="72" height="72"></a>
+		  <a class="blog-header-logo text-dark" href="<?= base_url()?>"><h4><i>Tiểu Ca Pages</i></h4></a>
+	  </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
         <a class="text-muted" href="#">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24" focusable="false"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
@@ -67,12 +67,12 @@
                   Hi, <strong><?=$session['name']?></strong>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/account/profile">
+                  <a class="dropdown-item" href="<?= base_url()?>index.php/auth/profile">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     Profile
                   </a>
                   <?php if($session['type'] == 1){ ?>
-                    <a class="dropdown-item" href="/account/profile">
+                    <a class="dropdown-item" href="#">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     Manage
                     </a>
@@ -96,8 +96,7 @@
     <nav class="nav d-flex justify-content-between">
     <?php 
     foreach ($category as $category){?>
-      <h6 class='font-italic text-uppercase'><a class="p-2 text-muted" href="<?= base_url()?>index.php/category/viewbycategory?id=<?= $category['id'] ?>">
-      <?= $category['name'] ?></a></h6>
+      <u><h6 class='font-italic text-uppercase'><a class="p-2 text-muted" href="<?= base_url()?>index.php/category/viewbycategory?id=<?= $category['id'] ?>"><?= $category['name'] ?></a></h6></u>
       <?php } ?>
     </nav>
   </div>

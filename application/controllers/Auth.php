@@ -4,12 +4,16 @@
 class Auth extends CI_Controller
  {
 
+ 	public $bareUrl;
 	 function __construct()
 		{
 			parent::__construct();
 			$this->load->helper('form');
 			$this->load->helper('url');
 			$this->load->library('session');
+			$this->bareUrl = base_url();
+			$this->load->library('upload');
+
 		}
 
 		public function loginForm()
@@ -22,68 +26,85 @@ class Auth extends CI_Controller
 			$this->load->view('Auth/register');
 		}
 
+		public function profile()
+		{
+			$_session = $this->getSession('userSession');
+			if(!empty($_session))
+				$this->load->view('Auth/profile');
+			else
+				redirect($this->bareUrl);
+		}
+
+		public function updateProfile()
+		{
+			$username = $_POST['username'];
+			$data = array(
+				'name' => $_POST['name'],
+				'address' => $_POST['address']
+			);
+			if(!empty($data))
+			{
+				$this->query('UPDATE info set name = "'.$data['name'].'" , address = "'.$data['address'].'" WHERE username = "'.$username.'"');
+				redirect($this->bareUrl);
+			}else
+				redirect($this->bareUrl);
+		}
+
 		public function register()
 		{
 			$data= array(
 				'username'=>$_POST['username'],
 				'name'=>$_POST['name'],
-				'password'=>$_POST['password'],
+				'password'=>md5($_POST['password']),
 				'confirm'=>$_POST['confirm'],
 				'address'=>$_POST['address']
 			);
 
 			$account = array(
 				'username'=>$_POST['username'],
-				'password'=>$_POST['password']
+				'password'=>md5($_POST['password'])
 			);
 			
 			$InsertAccount = 'INSERT INTO account (username,password) VALUES("'.$data["username"].'" , "'.$data["password"].'")';
 			$InsertInfo = 'INSERT INTO info (name,address,username) VALUES("'.$data["name"].'" , "'.$data["address"].'" , "'.$data["username"].'")';
 
-			$this->insert($InsertAccount);
-			$this->insert($InsertInfo);
+			$this->query($InsertAccount);
+			$this->query($InsertInfo);
 			$this->login($account);
-			redirect($bare_url);
+			redirect($this->bareUrl);
 		}
 
 		public function login($sessionLogin = [])
 		{
-			$bare_url = base_url();	
 			if(empty($sessionLogin))
 			{
 				$data['username'] = $_POST['username'];
-				$data['password'] = $_POST['password'];
+				$data['password'] = md5($_POST['password']);
 			}else
 			{
 				$data['username'] = $sessionLogin['username'];
 				$data['password'] = $sessionLogin['password'];
 			}
 		
-			// $query = 'SELECT * FROM account WHERE is_delete = 0 AND username = "'.$data['username'].'" AND password = "'.$data['password'].'"';
-			$query = 'SELECT * FROM account a INNER JOIN info i on a.username = i.username WHERE a.is_delete = 0 AND a.username = "'.$data['username'].'" AND a.password = "'.$data['password'].'"';
-			$result = $this->query($query);
-
+			$query = 'SELECT * FROM account a INNER JOIN info i on a.username = i.username WHERE 
+					  a.is_delete = 0 AND a.username = "'.$data['username'].'" AND a.password = "'.$data['password'].'"';
+			$result = $this->query($query)->result();
 			$this->setSession('userSession',$result[0]);
 
 			if(!empty($result))
-				redirect($bare_url);
+				redirect($this->bareUrl);
 			else
 				echo 'login that bai';
 		}
 
 		public function logout()
 		{
+
 			$this->removeSession('userSession');
-			return redirect($bare_url);
+			return redirect($this->bareUrl);
 		}
 
 		public function query($query)
-		{
-			$this->load->database();
-			return $this->db->query($query)->result_array();
-		}
-
-		public function insert($query)
 		{
 			$this->load->database();
 			return $this->db->query($query);
@@ -94,9 +115,9 @@ class Auth extends CI_Controller
 			return $this->session->set_userdata($sessionName,$value);
 		}
 
-		public function getSession($sessionName,$value)
+		public function getSession($sessionName)
 		{
-			return $_SESSION($sessionName);
+			return $_SESSION[$sessionName];
 		}
 
 		public function removeSession($sessionName)
@@ -104,4 +125,7 @@ class Auth extends CI_Controller
 			$this->session->unset_userdata($sessionName);
 		}
 
+		
+
+		
 }
