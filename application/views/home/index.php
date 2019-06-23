@@ -41,6 +41,13 @@
     <link href="blog.css" rel="stylesheet">
   </head>
   <body>
+  
+  <div class="jumbotron p-4 p-md-5 text-white rounded bg-primary">
+    <div class="col-md-12 px-0">
+      <h1 class="display-5 font-italic">The quick brown fox jumps over the lazy dog.</h1>
+      <i class="lead mb-0"><a href="#" class="text-white float-right">Current Notes, February 10, 1885</a></i>
+    </div>
+  </div>
 
   <div class="row mb-2">
     <div class="col-md-6">

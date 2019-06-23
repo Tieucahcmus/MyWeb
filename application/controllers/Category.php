@@ -17,18 +17,35 @@ class Category extends CI_Controller
 
         public function viewByCategory()
         {
+            $session = (array)$this->getSession('userSession');
             $id = $_GET['id'];
-            $singleCat = $this->query('SELECT * FROM category WHERE id = "'.$id.' " AND is_delete = 0')->result_array();
-            if(!empty($singleCat)){
-                $category = $this->query('SELECT * FROM category WHERE is_delete = 0')->result_array();
-                $data = array('category'=>$category);
-                $this->load->view('header',$data);
-                $this->load->view('category/single');
-                $this->load->view('footer',$data);
-            }else { redirect($this->bareUrl); }
+            
+            if($id == 4 && $session['type'] != 1){ redirect($this->bareUrl);}
+            else
+            {
+                $singleCat = $this->query('SELECT * FROM category WHERE id = "'.$id.' " AND is_delete = 0')->result();
+                $postByCat = $this->query('SELECT * FROM post WHERE catid = "'.$id.' " AND is_delete = 0')->result();
+                
+                if(!empty($singleCat)){
+                        $category = $this->query('SELECT * FROM category WHERE is_delete = 0')->result_array();
+                        $data = array(
+                            'category'=>$category,
+                            'singleCat'=>(array)$singleCat[0],
+                            'postByCat'=>(array)$postByCat
+                        );
 
+                       
+                        $this->load->view('header',$data);
+                        $this->load->view('category/singleCat');
+                        $this->load->view('footer',$data);
+
+                }else { redirect($this->bareUrl); }
+            }
         }
-
+        public function getSession($sessionName)
+		{
+			return $_SESSION[$sessionName];
+		}
         public function query($query)
 		{
 			$this->load->database();

@@ -96,14 +96,14 @@
     <nav class="nav d-flex justify-content-between">
     <?php 
     foreach ($category as $category){?>
-      <u><h6 class='font-italic text-uppercase'><a class="p-2 text-muted" href="<?= base_url()?>index.php/category/viewbycategory?id=<?= $category['id'] ?>"><?= $category['name'] ?></a></h6></u>
+      <u><h6 class='font-italic text-uppercase'><a title="<?= $category['name'] ?>" class="p-2 text-muted" href="<?= base_url()?>index.php/category/viewbycategory?id=<?= $category['id'] ?>"><?= $category['name'] ?></a></h6></u>
       <?php } ?>
     </nav>
   </div>
 
-  <div class="jumbotron p-4 p-md-5 text-white rounded bg-primary">
+  <!-- <div class="jumbotron p-4 p-md-5 text-white rounded bg-primary">
     <div class="col-md-12 px-0">
       <h1 class="display-5 font-italic">The quick brown fox jumps over the lazy dog.</h1>
       <i class="lead mb-0"><a href="#" class="text-white float-right">Current Notes, February 10, 1885</a></i>
     </div>
-  </div>
+  </div> -->
