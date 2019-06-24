@@ -72,7 +72,7 @@
                     Profile
                   </a>
                   <?php if($session['type'] == 1){ ?>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="<?= base_url()?>index.php/manager">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     Manage
                     </a>

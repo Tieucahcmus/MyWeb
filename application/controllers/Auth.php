@@ -44,7 +44,7 @@ class Auth extends CI_Controller
 			);
 			if(!empty($data))
 			{
-				$this->query('UPDATE info set name = "'.$data['name'].'" , address = "'.$data['address'].'" WHERE username = "'.$username.'"');
+				$this->query("UPDATE info set name = '{$data['name']}' , address = '{$data['address']}' WHERE username ='{$username}'");
 				redirect($this->bareUrl);
 			}else
 				redirect($this->bareUrl);
@@ -65,8 +65,8 @@ class Auth extends CI_Controller
 				'password'=>md5($_POST['password'])
 			);
 			
-			$InsertAccount = 'INSERT INTO account (username,password) VALUES("'.$data["username"].'" , "'.$data["password"].'")';
-			$InsertInfo = 'INSERT INTO info (name,address,username) VALUES("'.$data["name"].'" , "'.$data["address"].'" , "'.$data["username"].'")';
+			$InsertAccount = "INSERT INTO account (username,password) VALUES('{$data['username']}','{$data['password']}')";
+			$InsertInfo = "INSERT INTO info (name,address,username) VALUES('{$data['name']}' , '{$data['address']}','{$data['username']}')";
 
 			$this->query($InsertAccount);
 			$this->query($InsertInfo);
@@ -86,15 +86,17 @@ class Auth extends CI_Controller
 				$data['password'] = $sessionLogin['password'];
 			}
 		
-			$query = 'SELECT * FROM account a INNER JOIN info i on a.username = i.username WHERE 
-					  a.is_delete = 0 AND a.username = "'.$data['username'].'" AND a.password = "'.$data['password'].'"';
+			$query = "SELECT * FROM account a INNER JOIN info i on a.username = i.username WHERE 
+					  a.is_delete = 0 AND a.username = '{$data["username"]}' AND a.password = '{$data["password"]}'";
+
+
 			$result = $this->query($query)->result();
 			$this->setSession('userSession',$result[0]);
 
-			if(!empty($result))
+			if(!empty($result[0]))
 				redirect($this->bareUrl);
 			else
-				echo 'login that bai';
+				$this->load->view('errors/index');
 		}
 
 		public function logout()

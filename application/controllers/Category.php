@@ -18,13 +18,17 @@ class Category extends CI_Controller
         public function viewByCategory()
         {
             $session = (array)$this->getSession('userSession');
+            if(empty($session)){ redirect($this->bareUrl); }
             $id = $_GET['id'];
             
             if($id == 4 && $session['type'] != 1){ redirect($this->bareUrl);}
-            else
+			else if($id == 3 && $session['type'] != 1){ redirect($this->bareUrl);}
+            else 
             {
-                $singleCat = $this->query('SELECT * FROM category WHERE id = "'.$id.' " AND is_delete = 0')->result();
-                $postByCat = $this->query('SELECT * FROM post WHERE catid = "'.$id.' " AND is_delete = 0')->result();
+                $singleCat = $this->query("SELECT * FROM category WHERE id =  '{$id}' AND is_delete = 0")->result();
+                $postByCat = $this->query("SELECT * FROM post p inner join image i
+                 on p.id = i.postID 
+                 WHERE p.catid = '{$id}' AND p.is_delete = 0")->result();
                 
                 if(!empty($singleCat)){
                         $category = $this->query('SELECT * FROM category WHERE is_delete = 0')->result_array();
@@ -34,7 +38,6 @@ class Category extends CI_Controller
                             'postByCat'=>(array)$postByCat
                         );
 
-                       
                         $this->load->view('header',$data);
                         $this->load->view('category/singleCat');
                         $this->load->view('footer',$data);

@@ -17,8 +17,21 @@ class Manager extends CI_Controller
 
 	public function index()
 	{
-		$this->load->view('manager/header');
+		$session =(array)$_SESSION['userSession'];
+		if(empty($session) && $session['type']!=1){redirect($this->bareUrl);}
+
+		$this->load->view('manager/layout/header');
 		$this->load->view('manager/index');
+		$this->load->view('manager/layout/footer');
+	}
+	
+	public function newpost()
+	{
+		$session =(array)$_SESSION['userSession'];
+		if(empty($session) && $session['type']!=1){redirect($this->bareUrl);}
+		
+		$this->load->view('manager/layout/header');
+		$this->load->view('manager/layout/footer');
 	}
 
 }

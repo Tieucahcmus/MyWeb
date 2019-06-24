@@ -1,6 +1,10 @@
 
 <?php 
-
+$this->load->helper('url');
+$this->load->library('session');
+if($this->session->has_userdata('userSession')){
+	$session =(array) $_SESSION['userSession'];
+}
 ?>
 <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/album/">
 <!-- Bootstrap core CSS -->
@@ -74,9 +78,9 @@
 <!-- main data -->
     <div class="row">
     <?php foreach($postByCat as $postByCat){?>
-        <div class="col-lg-4 mt-3 col-xs-6">
+        <div class="col-lg-4 mt-3 col-xs-6" >
           <div class="card">
-          <img src="https://kenh14cdn.com/2019/3/21/photo-1-1553155372658221231913.jpg" class="card-img-top" alt="...">
+          <img style="height:200" src="<?= $postByCat->image ?>" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-uppercase"><?= $postByCat->name ?></h5>
                 <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
