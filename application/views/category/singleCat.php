@@ -80,17 +80,25 @@ if($this->session->has_userdata('userSession')){
     <?php foreach($postByCat as $postByCat){?>
         <div class="col-lg-4 mt-3 col-xs-6" >
           <div class="card">
-          <img style="height:200" src="<?= $postByCat->image ?>" class="card-img-top" alt="...">
+          <img style="height:6cm" src="<?= $postByCat->image ?>" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-uppercase"><?= $postByCat->name ?></h5>
                 <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary float-right">Access</a>
+                <a <?php $link = $postByCat->content;
+                if($link != 'none' || empty($link))
+					echo 'href="'.$link.'"  target="_blank"';
+                else
+                	echo 'href = "#"';
+                ?>"
+
+				   class="btn btn-primary float-right">Access</a>
             </div>
           </div>
         </div>
       <?php } ?>
     </div>
 </main>
+</body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js"></script>
 <br>
